@@ -36,7 +36,8 @@ async def on_message(member):
             user[str(id)]["level"] = int(user[str(id)]["xp"] ** (1/3))
             new_level = user[str(id)]["level"]
             if level_have < new_level:
-                await member.channel.send(f"<@{id}> has levelled up to Level - {new_level}")
+                channel = bot.get_channel("ID HERE") #ENTER ID OF UPDATE CHANNEL HERE (WITHOUT INVERTED COMMA)
+                await channel.send(f"<@{id}> has levelled up to Level - {new_level}")
     
         with open("data.json", "w") as f: 
             json.dump(user, f, indent=4)
@@ -74,4 +75,4 @@ async def on_voice_state_update(member, before, after):
 async def ping(ctx):
     await ctx.send(f"Pong! `{round(bot.latency * 1000)}ms`") 
 
-bot.run("TOKEN")
+bot.run("TOKEN") #ENTER BOT TOKEN HERE (INSIDE INVERTED COMMA)
