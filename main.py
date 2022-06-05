@@ -1,6 +1,6 @@
 import json
 from discord.ext import commands
-from datetime import datetime, date, time
+from datetime import time
 import time
 
 bot = commands.Bot(command_prefix="?")
@@ -74,4 +74,4 @@ async def on_voice_state_update(member, before, after):
 async def ping(ctx):
     await ctx.send(f"Pong! `{round(bot.latency * 1000)}ms`") 
 
-bot.run("OTgyMDk5ODI1NDE3OTEyNDEx.GXPKGp.NtGU3gcjuQdjKd7SoKtL38mH1NKaAQ1IO6puzY")
+bot.run("TOKEN")
