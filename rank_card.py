@@ -25,9 +25,7 @@ class ranking(commands.Cog):
             background = Editor("assets/bg.png")
             pfp = await load_image_async(str(ctx.author.avatar_url))
             pfp = Editor(pfp).resize((130,130)).circle_image()
-            #side = Editor("assets/side.png")
 
-            #background.paste(side.image, ((70,-200)))
             background.paste(pfp.image, ((50,45)))
             background.rectangle((50,210), width=650, height=40, fill="white", radius=20)
             background.bar((50,210), max_width=650, height=40,percentage=xp_percent ,fill="#621df2", radius=20)
