@@ -2,17 +2,19 @@ import json
 from discord.ext import commands
 from datetime import time
 import time
+import discord
 
-bot = commands.Bot(command_prefix="?")
+bot = commands.Bot(command_prefix="?", intents = discord.Intents.all())
 
 #COGS
 from rank_card import ranking
-bot.add_cog(ranking(bot))
 
 #ON READY
 @bot.event
 async def on_ready():
     print('---> Logged in as {0.user}'.format(bot))
+    await bot.add_cog(ranking(bot))
+    print("---> Ranking card loaded")
 
 #CHAT POINTS
 @bot.event
@@ -35,14 +37,12 @@ async def on_message(member):
             level_have = user[str(id)]["level"]
             user[str(id)]["level"] = int(user[str(id)]["xp"] ** (1/3))
             new_level = user[str(id)]["level"]
-            if level_have < new_level:
-                channel = bot.get_channel("ID HERE") #ENTER ID OF UPDATE CHANNEL HERE (WITHOUT INVERTED COMMA)
-                await channel.send(f"<@{id}> has levelled up to Level - {new_level}")
-    
+            if new_level > level_have:
+                #channel = bot.get_channel("ID HERE") #ENTER ID OF UPDATE CHANNEL HERE (WITHOUT INVERTED COMMA)
+                await member.channel.send(f"GG! <@{id}> has levelled up to Level - {new_level}")
+                await bot.process_commands(member)
         with open("data.json", "w") as f: 
             json.dump(user, f, indent=4)
-
-        await bot.process_commands(member)
 
 #POINTS ON VC
 @bot.event
@@ -75,4 +75,4 @@ async def on_voice_state_update(member, before, after):
 async def ping(ctx):
     await ctx.send(f"Pong! `{round(bot.latency * 1000)}ms`") 
 
-bot.run("TOKEN") #ENTER BOT TOKEN HERE (INSIDE INVERTED COMMA)
+bot.run("OTgyMDk5ODI1NDE3OTEyNDEx.Gfyuig.QvC8OJb69RPHCtPAU_nGeD-86sH918aVoB5JHE") #ENTER BOT TOKEN HERE (INSIDE INVERTED COMMA)
