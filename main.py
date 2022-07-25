@@ -1,5 +1,4 @@
 import json
-from turtle import clear
 from discord.ext import commands, tasks
 from datetime import time
 import time
