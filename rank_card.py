@@ -47,6 +47,12 @@ class ranking(commands.Cog):
                 user[str(id)] = {}
                 user[str(id)]['xp'] = 0
                 user[str(id)]['level'] = 1
+                user[str(id)]['d-xp'] = 0
+                user[str(id)]['daily'] = 1
+                user[str(id)]['w-xp'] = 0
+                user[str(id)]['weekly'] = 1
+                user[str(id)]['m-xp'] = 0
+                user[str(id)]['monthly'] = 1
                 await ctx.reply("We just updated the database\nUse`?rank` again to check rank")
             with open("data.json", "w") as f:
                 json.dump(user, f, indent=4)
