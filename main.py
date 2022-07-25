@@ -1,12 +1,12 @@
 import json
 from discord.ext import commands, tasks
 from datetime import time
-import time
+import time, os
 import discord
 import operator
 import datetime
 
-bot = commands.Bot(command_prefix="?", intents = discord.Intents.all())
+bot = commands.Bot(command_prefix="!", intents = discord.Intents.all())
 
 #COGS
 from rank_card import ranking
@@ -54,8 +54,8 @@ async def on_message(member):
             user[str(id)]["monthly"] = int(user[str(id)]["m-xp"] ** (1/3))
             new_level = user[str(id)]["level"]
             if new_level > level_have:
-                #channel = bot.get_channel("ID HERE") #Channel ID here "to receive updates"
-                await member.channel.send(f"GG! <@{id}> has levelled up to Level - {new_level}")
+                #channel = bot.get_channel("1000186784757579908") #Channel ID here "to receive updates"
+                await member.channel.send(f"> <@{id}>님이 {new_level}레벨로 오르셨습니다!")
                 await bot.process_commands(member)
         with open("data.json", "w") as f: 
             json.dump(user, f, indent=4)
@@ -92,13 +92,8 @@ async def on_voice_state_update(member, before, after):
             with open("data.json", "w") as f:
                 json.dump(file, f, indent=4)
 
-#PING
-@bot.command()
-async def ping(ctx):
-    await ctx.send(f"Pong! `{round(bot.latency * 1000)}ms`") 
-
 #Leaderboard
-@bot.command()
+@bot.command(name="리더보드")
 async def leaderboard(ctx):
     try:
         with open("data.json","r") as f:
@@ -113,7 +108,7 @@ async def leaderboard(ctx):
         key = dAgain.keys()
         topList = list(key)
         embed=discord.Embed(color=0xff00ea)
-        embed.add_field(name="Leaderboard", value=f"""
+        embed.add_field(name="레벨 리더보드", value=f"""
     #1 - <@{topList[0]}>
     #2 - <@{topList[1]}>
     #3 - <@{topList[2]}>
@@ -126,13 +121,12 @@ async def leaderboard(ctx):
     #10 - <@{topList[9]}>
     """, inline=False)
         embed. set_image(url="https://media.discordapp.net/attachments/870649335451361320/870944688545366057/Narrow_rgb_loading.gif")
-        embed.set_footer(text = f"Requested by @{ctx.author}")
         await ctx.send(embed=embed)
     except Exception as e:
-        await ctx.send("Not enogh data to show Leaderboard")
+        await ctx.send("> 리더보드를 보기위한 데이터가 부족합니다")
 
 #Daily
-@bot.command()
+@bot.command(name="오늘레벨")
 async def daily(ctx):
     try:
         with open("data.json","r") as f:
@@ -147,7 +141,7 @@ async def daily(ctx):
         key = dAgain.keys()
         topList = list(key)
         embed=discord.Embed(color=0xff00ea)
-        embed.add_field(name="Daily Leaderboard", value=f"""
+        embed.add_field(name="오늘의 레벨 리더보드", value=f"""
     #1 - <@{topList[0]}>
     #2 - <@{topList[1]}>
     #3 - <@{topList[2]}>
@@ -160,13 +154,12 @@ async def daily(ctx):
     #10 - <@{topList[9]}>
     """, inline=False)
         embed. set_image(url="https://media.discordapp.net/attachments/870649335451361320/870944688545366057/Narrow_rgb_loading.gif")
-        embed.set_footer(text = f"Requested by @{ctx.author}")
         await ctx.send(embed=embed)
     except Exception as e:
-        await ctx.send("Not enogh data to show Leaderboard")
+        await ctx.send("> 리더보드를 보기위한 데이터가 부족합니다")
 
 #Weekly
-@bot.command()
+@bot.command(name="주간레벨")
 async def weekly(ctx):
     try:
         with open("data.json","r") as f:
@@ -181,7 +174,7 @@ async def weekly(ctx):
         key = dAgain.keys()
         topList = list(key)
         embed=discord.Embed(color=0xff00ea)
-        embed.add_field(name="Leaderboard", value=f"""
+        embed.add_field(name="주간 리더보드", value=f"""
     #1 - <@{topList[0]}>
     #2 - <@{topList[1]}>
     #3 - <@{topList[2]}>
@@ -194,13 +187,12 @@ async def weekly(ctx):
     #10 - <@{topList[9]}>
     """, inline=False)
         embed. set_image(url="https://media.discordapp.net/attachments/870649335451361320/870944688545366057/Narrow_rgb_loading.gif")
-        embed.set_footer(text = f"Requested by @{ctx.author}")
         await ctx.send(embed=embed)
     except Exception as e:
-        await ctx.send("Not enogh data to show Leaderboard")
+        await ctx.send("> 리더보드를 보기위한 데이터가 부족합니다")
 
 #Monthly
-@bot.command()
+@bot.command(name="매달레벨")
 async def monthly(ctx):
     try:
         with open("data.json","r") as f:
@@ -215,7 +207,7 @@ async def monthly(ctx):
         key = dAgain.keys()
         topList = list(key)
         embed=discord.Embed(color=0xff00ea)
-        embed.add_field(name="Leaderboard", value=f"""
+        embed.add_field(name="매달 리더보드", value=f"""
     #1 - <@{topList[0]}>
     #2 - <@{topList[1]}>
     #3 - <@{topList[2]}>
@@ -228,10 +220,9 @@ async def monthly(ctx):
     #10 - <@{topList[9]}>
     """, inline=False)
         embed. set_image(url="https://media.discordapp.net/attachments/870649335451361320/870944688545366057/Narrow_rgb_loading.gif")
-        embed.set_footer(text = f"Requested by @{ctx.author}")
         await ctx.send(embed=embed)
     except Exception as e:
-        await ctx.send("Not enogh data to show Leaderboard")
+        await ctx.send("> 리더보드를 보기위한 데이터가 부족합니다")
 
 #Daily Loop
 @tasks.loop(hours=24)
@@ -263,4 +254,4 @@ async def clearWeekly():
     with open('data.json', 'w') as f:
         json.dump(file, f, indent=4)
 
-bot.run("Token") #Bot Token
+bot.run(os.getenv(TOKEN)) #Bot Token
