@@ -8,7 +8,7 @@ class ranking(commands.Cog):
     def __init__(self, bot):
         self.bot = bot
 
-    @commands.command()
+    @commands.command(name="랭크")
     async def rank(self, ctx, user:discord.Member = None):
         if user is None:
             user = ctx.author
@@ -53,7 +53,7 @@ class ranking(commands.Cog):
                 user[str(id)]['weekly'] = 1
                 user[str(id)]['m-xp'] = 0
                 user[str(id)]['monthly'] = 1
-                await ctx.reply("We just updated the database\nUse`?rank` again to check rank")
+                await ctx.reply("방금 데이터를 업데이트했습니다 다시 입력해주세요")
             with open("data.json", "w") as f:
                 json.dump(user, f, indent=4)
 
